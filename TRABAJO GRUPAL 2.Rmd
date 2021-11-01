@@ -1,0 +1,112 @@
+---
+title: "AVANCE 2"
+author: "Cesar Clemente"
+date: "31/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+El domingo 6 de junio del presente año, se realizaron las elecciones de la segunda vuelta electoral con miras al sillón presidencial entre dos candidatos que bien podríamos decir se encontraban en las antípodas ideológicas.  En primer lugar, tenemos a Keiko Fujimori, quien postulaba por 3° vez a la presidencia de la republica a través de su partido Fuerza Popular. Mientras que, en segundo lugar, tenemos a Pedro Castillo, un rondero, profesor y sindicalista, quien ya era conocido por haber dirigido la huelga general de maestros allá en el 2017 (RPP, 2021). Lo interesante de estas elecciones es que hubo bastante crispación entre la ciudadanía en general, por defender con capa y espada a ambos candidatos. Esto bajo el supuesto de que el candidato al que no apoyaban, ya sea Fujimori o Castillo representaría a la larga un peligro para la estabilidad de la nación (France24, 2021). 
+
+Lo sorprende fue que, a pesar de todo el dinero invertido, así como el apoyo de diversos personajes tanto de la vida política, como de la farándula, así como del mundo del deporte, Keiko Fujimori perdió las elecciones presidenciales 2021. En sí una hipótesis para entender dicha victoria es la enorme desigualdad existente en el Perú, la cual influencio en que Castillo pudiese vender de manera efectiva su discurso de no más pobres en un país rico. No obstante, otro factor importante es el anti fujimorismo existente el cual provocó que muchas personas decidiesen votar por Castillo por sobre Keiko bajo el argumento de que el sindicalista era un mal menor frente a la heredera del régimen fujimorista (Toledo, 2021)
+
+Esto nos lleva a la que será nuestra pregunta de investigación para el proyecto grupal del curso de Estadística 2 del ciclo 2021-2, la cual sería: ¿Cuáles son los factores que derivaron en la victoria de Pedro Castillo? Para conseguir responder está interrogante se decidió utilizar como base de datos la encuesta de intención de voto de la 2°vuelta electoral, patrocinada por la encuestadora DATUM. Ahora bien, con respecto a que variables utilizaremos para averiguar que factores generaron que las personas decidieran votar por Castillo se decidió escoger: el género, la zona de residencia (Urbana o Rural), el lugar de residencia, así como el Nivel Socioeconómico de la persona a entrevistar.  
+
+Asimismo, al escoger variables como las indicas para entender la victoria de Castillo se decidió también realizar las siguientes hipótesis. La primera es que aquellas regiones con menor IDH son aquellas que votaron principalmente por Castillo. La segunda hipótesis es que las personas con un menor nivel socioeconómico son aquellas que decidieron votar por Pedro Castillo en la segunda vuelta electoral. Mientras que, la tercera hipótesis es que las mujeres mayormente decidieron votar por Pedro Castillo. Por último, considero necesario resaltar que el objetivo general de este informa es comprender los factores que llevaron a que Castillo se siente hoy en día en el sillón presidencial. A la par que los objetivos específicos son: observar si las variables de educación, zona y lugar de residencia, genero tuvieron alguna influencia en que dicha victoria fuese posible. 
+
+Fuentes
+FRANCE 24. (2021). Perú: una virtual presidencia frente a escenarios hostiles y pedidos antidemocráticos. Recuperado el 28 de octubre de 2021 de: https://www.france24.com/es/am%C3%A9rica-latina/20210616-peru-elecciones-pedro-castillo-virtual-presidencia 
+RPP. (2021). Steven Levitsky: Pedro Castillo es muy radical y Keiko Fujimori es la reina de la impopularidad. Recuperado el 28 de octubre de 2021 de: https://rpp.pe/politica/elecciones/steven-levitsky-pedro-castillo-es-muy-radical-y-keiko-fujimori-es-la-reina-de-la-impopularidad-noticia-1333091?ref=rpp 
+
+Toledo, Zaraí. (2021). Una guía para entender el Perú de Pedro Castillo. Recuperado el 28 de octubre de 2021 de: https://nuso.org/articulo/una-guia-para-entender-el-peru-de-pedro-castillo/ 
+
+PROGRAMA DE LAS NACIONES UNIDAS PARA EL DESARROLLO (PNUD)
+2019	El reto de la igualdad en el Perú. Lima
+
+
+
+
+#ABRIMOS BASE DE DATOS
+```{r} 
+library(foreign)
+data <- read.spss("DATUM Mayo.sav",
+          use.value.labels = T, 
+          to.data.frame=TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(devtools)
+```
+
+
+
+# VARIABLE DEPENDIENTE
+```{r}
+data$P1=as.numeric(data$P1)
+```
+
+# VARIABLES INDEPENDIENTES
+Género, la zona de residencia (Urbana o Rural), el lugar de residencia, así como el Nivel Socioeconómico de la persona a entrevistar.
+
+
+
+
+# PRIMERA HIPOTESIS
+
+Aquellas regiones con menor IDH son aquellas que votaron principalmente por Castillo
+
+```{r}
+modelo1=lm(P1~reg,data = data)
+summary(modelo1)
+```
+
+Vemos que de las cuatro regiones, son las regiones Sur y Centro, las que un mayor apoyo dio a Pedro Castillo en sus respuestas. Asimismo, en estas regiones, según el informe del Programa de las Naciones Unidas para el Desarrollo del 2019, en las regiones mencionadas anteriormente, encontramos a las regiones con menor IDH a nivel nacional como el caso de Pasco (0,4785), Junín (0,5107), Apurímac (0,4109), etc.
+
+# SEGUNDA HIPOTESIS
+La segunda hipótesis es que las personas con un menor nivel socioeconómico son aquellas que decidieron apoyar a Pedro Castillo.
+
+```{r}
+modelo2=lm(P1~dc5,data = data)
+summary(modelo2)
+```
+
+Vemos que de los 5 niveles socioeconómicos (nivel A/B, nivel C, nivel D, nivel E, nivel R ) en la encuesta de DATUM, son los niveles E y R (rural) los que presentaron un mayor apoyo a Pedro Castillo. 
+
+# TERCERA HIPOTESIS
+La poblacion femenina presento un mayor apoyo a  Pedro Castillo
+
+```{r}
+modelo3=lm(P1~dc1,data = data)
+summary(modelo3)
+```
+
+En la encuesta de DATUM, es la poblacion femenina en general, quienes presentaron un apoyo significativo a Pedro Castillo. 
+
+# MODELO GENERAL
+```{r}
+modelo4=lm(P1~reg+dc5+dc1,data=data)
+summary(modelo4)
+```
+
+Vemos que el modelo es válido porque su p-valor es menor a 0,05
+
+El modelo explica el 4,26% de los casos
+
+Las variables regSUR, regCentro, dc5R, dc5E y dc1Mujer quienes aportan al modelo
+
+
+LINK DEL GITHUB: 
+https://github.com/LuisFi18/Llanos-Clemente-TG-2-ESTADISTICA.git
+
+
+
+
+
+
+
