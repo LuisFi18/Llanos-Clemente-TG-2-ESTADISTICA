@@ -1,0 +1,521 @@
+---
+title: "Trabajo Final"
+author: "Luis Llanos y Cesar Clemente"
+date: "17/12/2021"
+output: html_document
+---
+
+
+Introducción
+
+ El domingo 6 de junio del presente año, se realizaron las elecciones de la segunda vuelta electoral con miras al sillón presidencial entre dos candidatos que bien podríamos decir se encontraban en las antípodas ideológicas.  En primer lugar, tenemos a Keiko Fujimori, quien postulaba por 3° vez a la presidencia de la república a través de su partido Fuerza Popular. Mientras que, en segundo lugar, tenemos a Pedro Castillo, un rondero, profesor y sindicalista, quien ya era conocido por haber dirigido la huelga general de maestros allá en el 2017 (RPP, 2021). Lo interesante de estas elecciones es que hubo bastante crispación entre la ciudadanía en general, por defender con capa y espada a ambos candidatos. Esto bajo el supuesto de que el candidato al que no apoyaban, ya sea Fujimori o Castillo representaría a la larga un peligro para la estabilidad de la nación (France24, 2021). 
+ 
+Lo sorprende fue que, a pesar de todo el dinero invertido, así como el apoyo de diversos personajes tanto de la vida política, como de la farándula, así como del mundo del deporte, Keiko Fujimori perdió las elecciones presidenciales 2021. En sí una hipótesis para entender dicha victoria es la enorme desigualdad existente en el Perú, la cual influenció en que Castillo pudiese vender de manera efectiva su discurso de no más pobres en un país rico. No obstante, otro factor importante es el anti fujimorismo existente el cual provocó que muchas personas decidiesen votar por Castillo por sobre Keiko, bajo el argumento de que el sindicalista era un mal menor frente a la heredera del régimen fujimorista (Toledo, 2021). Asimismo, un factor importante que debe ser tomado en cuenta es que principalmente el sur apoyó fuertemente a Castillo, ya que al ser una de las zonas mayormente atrasadas del país consideran que Castillo los ayudará a salir adelante. Mientras que, en el caso del oriente la mayor parte de esta zona del país apoya a Fujimori, debido en que, en la memoria colectiva, Keiko será igual que su padre: realizará los mismos proyectos que trajeron “prosperidad” a la región (BBC, 2021).
+
+ Esto nos lleva a la que será nuestra pregunta de investigación para el proyecto grupal del curso de Estadística 2 del ciclo 2021-2, la cual sería: ¿Cuáles son los factores que derivaron en la victoria de Pedro Castillo? Para conseguir responder está interrogante se decidió utilizar como base de datos la encuesta de intención de voto de la 2°vuelta electoral, patrocinada por la encuestadora DATUM, pero además se agregó data de una recolección de información realizada por la ONPE relacionada a la segunda vuelta electoral con miras a complementar la información presentada y tener un panorama más completo de la situación. Ahora bien, con respecto a que variables utilizaremos para averiguar qué factores generaron que las personas decidieran votar por Castillo, se decidió escoger: cobertura de servicios como agua o electricidad, acceso a servicios financieros, alta tasa de criminalidad, acceso a internet, tasa de criminalidad, etc.
+ 
+Asimismo, al escoger variables como las indicadas para entender la victoria de Castillo se decidió también realizar las siguientes hipótesis (las cuales están avaladas, en parte, por la literatura). La primera de estas es que las regiones con menor cobertura de servicios de agua y electricidad son aquellas que decidieron votar por Pedro Castillo en la segunda vuelta electoral. Mientras que, la segunda hipótesis es que, las regiones sureñas, principalmente, decidieron votar por Pedro Castillo.  Asimismo, otra hipótesis es que las regiones donde las personas tienen menor acceso a los servicios financieros principalmente son los que votaron a favor de Castillo. También, otra hipótesis es que las regiones con mayor percepción de criminalidad son aquellas que eligieron a Castillo. Por último, considero necesario resaltar que el objetivo general de este informe es comprender los factores que llevaron a que Castillo se siente hoy en día en el sillón presidencial. A la par que los objetivos específicos son: observar si las variables de servicios, zona de residencia, servicios financieros y percepción de criminalidad, tuvieron alguna influencia en que dicha victoria fuese posible. 
+
+Fuentes
+BBC. (2021). Elecciones en Perú: el mapa que explica la división del voto entre el "sur antisistema" favorable a Castillo y las ciudades que votaron por Fujimori. Recuperado el 11 de diciembre de 2021 de: https://www.bbc.com/mundo/noticias-america-latina-57394794 
+DATUM. (2021). Intención de Voto - 21 mayo 2da vuelta 2021. Recuperado el 16 de diciembre de 2021 de: http://www.datum.com.pe/intencion-de-voto/base?mes=MayoIII2021 
+FRANCE 24. (2021). Perú: una virtual presidencia frente a escenarios hostiles y pedidos antidemocráticos. Recuperado el 28 de octubre de 2021 de: https://www.france24.com/es/am%C3%A9rica-latina/20210616-peru-elecciones-pedro-castillo-virtual-presidencia 
+RPP. (2021). Steven Levitsky: Pedro Castillo es muy radical y Keiko Fujimori es la reina de la impopularidad. Recuperado el 28 de octubre de 2021 de: https://rpp.pe/politica/elecciones/steven-levitsky-pedro-castillo-es-muy-radical-y-keiko-fujimori-es-la-reina-de-la-impopularidad-noticia-1333091?ref=rpp 
+Toledo, Zaraí. (2021). Una guía para entender el Perú de Pedro Castillo. Recuperado el 28 de octubre de 2021 de: https://nuso.org/articulo/una-guia-para-entender-el-peru-de-pedro-castillo/ 
+
+
+Parte practica
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+options(scipen=999) # No mostrar notación científica
+```
+
+# Planes de gobierno
+
+Un resumen rápido y dinámico de los planes de gobierno de los dos partidos políticos inmmersos en la 2da vuelta electoral para la Presidencia en Perú 2021 se puede obtener a partir de la elaboración de nubes de palabras.    
+
+Las nubes de palabras permiten realizar una representación visual de las palabras que conforman un texto, donde las palabras que aparecen con más frecuencia vienen representadas con textos de mayor tamaño.    
+
+Empezaremos por el plan de gobierno del partido político "Perú Libre".   
+
+## Nube de palabras del plan de gobierno de "Perú Libre"
+
+```{r, warning=FALSE, message=FALSE}
+library(pdftools)
+
+text <- pdf_text("https://apisije-e.jne.gob.pe/TRAMITE/ESCRITO/2108/ARCHIVO/FIRMADO/9716.PDF")
+text <- iconv(text, to="latin1")
+```
+
+Es normal que en la redacción de los documentos se usen múltiples sinónimos que, como la definición de sinónimos indica, son palabras con el mismo contenido semántico. Por ello, conviene efectuar un reemplazo de palabras.
+
+```{r}
+text <- gsub("público", "pública", text)
+text <- gsub("públicas", "pública", text)
+text <- gsub("políticas", "política", text)
+text <- gsub("sistemas", "sistema", text)
+text <- gsub("ciudadana", "ciudadano", text)
+text <- gsub("ciudadanos", "ciudadano", text)
+text <- gsub("gobiernos", "gobierno", text)
+text <- gsub("ambientales", "ambiental", text)
+text <- gsub("ambiente", "ambiental", text)
+text <- gsub("cultural", "cultura", text)
+text <- gsub("servicios", "servicio", text)
+text <- gsub("sociales", "social", text)
+text <- gsub("mejora", "mejor", text)
+text <- gsub("ciudades", "ciudad", text)
+text <- gsub("peruanas", "peruano", text)
+text <- gsub("peruana", "peruano", text)
+text <- gsub("peruanos", "peruano", text)
+text <- gsub("todas", "todos", text)
+```
+
+Elaboración del corpus.  
+
+```{r, warning=FALSE, message=FALSE}
+library(tm)
+
+corpus <- Corpus(VectorSource(text))
+d <- corpus
+
+d <- tm_map(d, tolower) #cambio a minúsculas
+d <- tm_map(d, stripWhitespace) #eliminar espacios en blanco
+d <- tm_map(d, removePunctuation) #eliminar signos de puntuación
+d <- tm_map(d, removeNumbers) #eliminar números
+```
+
+Los stopwords son las palabras que por sí solas no guardan un significado. Son comunmente los artículos, pronombres, preposiciones y adverbios. No significa que carezcan de importancia, pero sí es necesario eliminarlas del corpus.   
+
+```{r, warning=FALSE, message=FALSE}
+lista_remover <- c('maría','ello','así','cada','hace','hacia','vez',
+                   'través','sino','dentro','asimismo','mediante',
+                   'además') #lista personalizada de stopwords
+d <- tm_map(d, removeWords, c(stopwords("spanish"), lista_remover))
+```
+
+Matriz de términos.   
+
+```{r, warning=FALSE, message=FALSE}
+m <- as.matrix(TermDocumentMatrix(d))
+v <- sort(rowSums(m), decreasing=TRUE)
+t <- data.frame(word=names(v), freq=v)
+```
+
+`r paste0("Nube de ",sum(t$freq)," palabras.")`
+
+```{r, out.width = "900px", fig.height=6, fig.width=6}
+library(wordcloud2)
+wordcloud2(t, size=0.75, backgroundColor="black", 
+           color='random-light', shuffle=F)
+```
+
+Al observar la lista de palabras más repetidas dentro del plan de lo que es Perú Libre, podemos observar que las principales serían programa, trabajo, debe, nacional, sector, social, deuda, recursos, empresa. En sí la aparición de estas palabras no debería sorprendernos, dado que la "ideología" de Perú Libre al ser Marxismo, Leniismo, Mariateguismo, debería de por sí tener un discurso autoritario:por lo que se entiende el porque DEBE es la palabra más repetida en todo el programa. Asimismo, para mostrar a la ciudadanía  que ellos (Perú Libre) no están bromeando respecto a que saben dirigir el país repiten 63 veces la palabra programa, casi como queriendo echarnos en la cara que ellos tienen un programa, mientras que los otros partidos  no tienen nada.  
+
+
+
+## Nube de palabras del plan de gobierno de "Fuerza Popular"
+
+```{r, warning=FALSE, message=FALSE}
+library(pdftools)
+
+text <- pdf_text("https://apisije-e.jne.gob.pe/TRAMITE/ESCRITO/1095/ARCHIVO/FIRMADO/3017.PDF")
+text <- iconv(text, to="latin1")
+```
+
+Es normal que en la redacción de los documentos se usen múltiples sinónimos que, como la definición de sinónimos indica, son palabras con el mismo contenido semántico. Por ello, conviene efectuar un reemplazo de palabras.
+
+```{r}
+text <- gsub("público", "pública", text)
+text <- gsub("públicas", "pública", text)
+text <- gsub("políticas", "política", text)
+text <- gsub("sistemas", "sistema", text)
+text <- gsub("ciudadana", "ciudadano", text)
+text <- gsub("ciudadanos", "ciudadano", text)
+text <- gsub("gobiernos", "gobierno", text)
+text <- gsub("ambientales", "ambiental", text)
+text <- gsub("ambiente", "ambiental", text)
+text <- gsub("cultural", "cultura", text)
+text <- gsub("servicios", "servicio", text)
+text <- gsub("sociales", "social", text)
+text <- gsub("mejora", "mejor", text)
+text <- gsub("ciudades", "ciudad", text)
+text <- gsub("peruanas", "peruano", text)
+text <- gsub("peruana", "peruano", text)
+text <- gsub("peruanos", "peruano", text)
+text <- gsub("todas", "todos", text)
+```
+
+Elaboración del corpus.  
+
+```{r, warning=FALSE, message=FALSE}
+library(tm)
+
+corpus <- Corpus(VectorSource(text))
+d <- corpus
+
+d <- tm_map(d, tolower) #cambio a minúsculas
+d <- tm_map(d, stripWhitespace) #eliminar espacios en blanco
+d <- tm_map(d, removePunctuation) #eliminar signos de puntuación
+d <- tm_map(d, removeNumbers) #eliminar números
+```
+
+Los stopwords son las palabras que por sí solas no guardan un significado. Son comunmente los artículos, pronombres, preposiciones y adverbios. No significa que carezcan de importancia, pero sí es necesario eliminarlas del corpus.   
+
+```{r, warning=FALSE, message=FALSE}
+lista_remover <- c('maría','ello','así','cada','hace','hacia','vez',
+                   'través','sino','dentro','asimismo','mediante',
+                   'además') #lista personalizada de stopwords
+d <- tm_map(d, removeWords, c(stopwords("spanish"), lista_remover))
+```
+
+Matriz de términos.   
+
+```{r, warning=FALSE, message=FALSE}
+m <- as.matrix(TermDocumentMatrix(d))
+v <- sort(rowSums(m), decreasing=TRUE)
+t <- data.frame(word=names(v), freq=v)
+```
+
+`r paste0("Nube de ",sum(t$freq)," palabras.")`
+
+```{r, out.width = "900px", fig.height=6, fig.width=6}
+library(wordcloud2)
+wordcloud2(t, size=0.75, backgroundColor="black", 
+           color='random-light', shuffle=F)
+```
+
+En cuanto al programa de Fuerza Popular podemos apreciar la repetición sistematica de ciertos palabras tales como sistema, empleo, salud, debe, etc. En cuanto a la primera se puede entender, ya que el partido de Fujimori busca proteger todo lo referente al status Quo en específico la Constitución del 93. Asimismo, hace enfasis en empleo y salud, ya que debido a la pandemia mucha genete o no ha tenido acceso a un buen sistema de salud, lo que derivó en su muerte o simplemente perdió su empleo y por ende la única forma de mantener a su familia. Ante este panorama Fujimori promete mejorar esta situación por lo cual es comprendible el poruqw estas palabras se repiten de manera sistematica en su plan de gobierno. 
+
+# Pre procesamiento de los datos
+
+## Importar datos
+
+```{r}
+df <- read_rds("datos.rds")
+glimpse(df) # Estructura dataset
+```
+
+## Resumen
+
+Observemos un resumen de los datos.
+
+```{r}
+summary(df)
+```
+
+## Filtrar
+
+Dado que el interés está enfocado en solo la intención de voto por Pedro Castillo o Keiko Fujimori, mantendremos en el dataset solo a estos dos grupos de personas.  
+```{r}
+df <- filter(df, Voto=="Pedro Castillo" | Voto=="Keiko Fujimori")
+df$Voto <- factor(df$Voto, levels = c("Pedro Castillo","Keiko Fujimori"))
+```
+
+## Detectar omisiones
+
+Las líneas rojas representan los valores omisos.  
+
+```{r, message=FALSE, warning=FALSE}
+library(VIM)
+matrixplot(df, sortby="Voto", axes=T, interactive=F) 
+```
+
+```{r}
+colSums(is.na(df)) # Variables con omisiones  
+
+table(ifelse(rowSums(is.na(df))==0, "NOesNA", "SIesNA"), df$RegionNatural)
+```
+
+Como se observa, las omisiones corresponden a la región natural "Lima, Callao, Lima Provincias". Por tanto, eliminaremos los registros correspondientes a esta región natural.  
+
+```{r}
+df <- filter(df, RegionNatural!="Lima, Callao, Lima Provincias")
+```
+
+# Gráficos de variables categóricas  
+
+Será útil realizar gráficos de frecuencias de las variables categóricas en función de la variable objetivo (Voto).   
+
+```{r}
+dfCAT <- select(df, Voto, Sexo, AreaGeografica, NSE, RegionNatural, Region)
+
+glimpse(dfCAT)
+```
+
+```{r}
+for(i in 2:(dim(dfCAT)[2])) {
+  
+  a = colnames(dfCAT)[i]
+  b = cbind(dfCAT[1],dfCAT[i])
+  
+  tabla <- data.frame(table(b[,1],b[,2]))
+  colnames(tabla) <- c("Voto", "var", "Frecuencia")
+  
+  p = ggplot(data=tabla, aes(x=var, y=Frecuencia, fill=Voto)) + 
+    geom_col() +
+    labs(title = paste("Voto vs.",a), x=a) +
+    theme(legend.position = "top") +
+    scale_fill_manual(values = c("#ff0000", "#ed6e00")) +
+    theme(axis.text.x=element_text(angle=45, hjust=1))
+  
+  print(p)
+
+}
+```
+
+El primer gráfico que es los votos obtenidos por ambos candidatos en relación al sexo demuestra que una predominancia por los hombres a elegir a Pedro Castillo, algo que sin duda no fue encontrado en la literatura revisada, esta realidad tendría sus bases en el hecho de que el Perú es un país machista, por lo que los hombres no sentirían que una mujer los representaría de la manera adecuada en el poder. Por otra parte, en lo referente por área geográfica se nota que en las zonas rurales hay mayor predominancia por Castillo, en contraste con la urbana donde los votos de ambos candidatos están casi igualados. Ello se debería a que Castillo representa para las zonas rurales alguien igual que ellos, por lo que la ciudadanía en esta zona está de acuerdo en darle su voto. Mientras que, en el caso de la zona urbana, la ciudadanía estaría dividida a la mitad, debido al factor antifujimorismo, el cual provoca que la ciudadanía vote por cualquier candidato en la segunda vuelta, si es que el mismo se enfrente a un Fujimori, ello según la politologa Zaraí Toledo.
+
+En cuanto a los votos por nivel socioeconómico podemos observar que el candidato del sombrero llevaba la delantera en zonas de bajo nivel: E y rural, lo cual coincide con la literatura revisada que hace énfasis en que las zonas con menor nivel socioeconómico fueron las más seducidas por el sombrero. Ello se debería a que este personaje realizó promesas en campaña, muchas de ellas populistas, pero que generaron en dicho sector de la población la esperanza de que si este señor llegase al poder la situación iba a cambiar. Con respecto a los otros sectores (C y D) podemos apreciar una suerte de lucha entre ambos candidatos: ello se debería a que ambos son populares en esos sectores. Mientras que en el sector A/B la situación varía ya que, en el mismo, gana la candidata Fujimori, muy probablemente ello se debe a para este sector el candidato Castillo es un candidato populista que representa el “comunismo” y la desigualdad hacia abajo, por lo que es sumamente dañino a los intereses de este grupo.
+
+En cuanto a los votos por región natural podemos apreciar una predominancia en el sur del país por Castillo, lo cual concuerda con los datos presentados por las encuestadoras, así como por la prensa. No obstante, el gráfico también da a resaltar un dato importante y es que buena parte del centro país también voto por Castillo. Mientras que la heredera de la dinastía Fujimori gana en los sectores tanto del Norte como del oriente del país, algo que también fue resaltado por politólogos, así como la prensa internacional. Por último, se aprecia el gráfico en donde se observa la frecuencia de votos (tanto para Castle como para la señora K) por región.
+
+El último gráfico es mejor observarlo en un mapa.  
+
+```{r, message=FALSE}
+tabla <- data.frame(table(df$Region, df$Voto))
+colnames(tabla) <- c("REGION","Voto","Frecuencia")
+
+tabla <- spread(tabla, Voto, Frecuencia)
+
+tabla$Preferencia <- ""
+tabla$Preferencia <- ifelse(tabla$`Pedro Castillo`>tabla$`Keiko Fujimori`,
+                            paste0("Pedro Castillo"), tabla$Preferencia)
+tabla$Preferencia <- ifelse(tabla$`Pedro Castillo`<tabla$`Keiko Fujimori`,
+                            paste0("Keiko Fujimori"), tabla$Preferencia)
+tabla$Preferencia <- ifelse(tabla$`Pedro Castillo`==tabla$`Keiko Fujimori`,
+                            paste0("Empate"), tabla$Preferencia)
+
+library(mapsPERU)
+library(sf)
+mapa <- map_REG
+mapa <- left_join(mapa, tabla, by = "REGION")
+mapa <- filter(mapa, is.na(Preferencia)==F)
+mapa$Preferencia <- factor(mapa$Preferencia, levels = c("Pedro Castillo",
+                                                        "Keiko Fujimori",
+                                                        "Empate"))
+```
+
+```{r, out.width = "3000px", fig.height=15, fig.width=12}
+library(ggplot2)
+colores <- c("#ff0000", "#ed6e00", "white")
+ggplot(mapa, aes(geometry=geometry)) +
+  geom_sf(aes(fill=Preferencia)) +
+  geom_text(data=mapa, aes(coords_x, coords_y, group=NULL, label=REGION), size=3) +
+  scale_fill_manual(values=colores)+
+  labs(x="", y="")
+```
+El mapa que tenemos aquí presente nos muestra un panorama más directo. En sí podemos apreciar lo que distintos investigadores ya habían dicho que el Sur, apoya defintivamente a Castillo. Ello se debería a que dicho sector del país al carecer de la presencia del Estado,lo cual provoca una percepción de abandono, se siente identificado con un discurso populista como el propuesto por Pedro Castillo como fue el no más pobres en un país rico, puesto que siente que por fin alguien los ayudará con sus problemas como es la falta de acceso a recursos, mejor calidad educativa, más seguridad,ect. Lo interesante es que este mapa muestra que cierta parte del centro país también apoya a Castillo, esto se debería a que, por muchos años de corrupción provocada por gobiernos regionales, la ciudadanía siente que necesitan a alguien que no pertenezca al Status Quo de vida politica y ante ello, el único de los dos candidatos que promete cambios en el panorama de la vida política y de paso en la vida de varios ciudadanos para "bien"es Castillo. En este punto debo resaltar que esto es una suposición, ya que la literatura no hace mucha mención acerca de la preferencia del centro del país por candidatos populitas, más bien muchos analistas suponen que el centro sería más Fujimorista ya que varias regiones tienen un mal recuerdo respecto a gobiernos populistas de izquierdas, por la corrupción como es el caso del gobierno de Castillo. 
+
+Asimismo, el mapa demuestra algo que diversos analistas ya habían resaltado,e ntre ellos, Zaraí Toledo y Steven Levitsky y es que tanto el Norte como el oriente del país siepre han sido bastiones del Fujimorismo, cada vez que Keiko se postula en las elecciones presidenciales. Ello debido a que para la ciudadanía de esta parte del país, el apellido Fujimori es sinonimo de progreso. Ya que, durante el gobierno autoritario de Alberto Fujimori se realizaron diversas constrcciones y se aplicaron programas sociales. Ahora bien, las construcciones se caían y los programas eran, en la mayoría de los casos, cuasi ineficientes; no obstante, la población de dichas regiones siento que por fin alguien(Alberto) hacía algo por ellos, se preocupaba por ellos. Y ello, generá que en estos tiempos la población crea que Keiko (la sucesora de Alberto) realizará las mismas obras que en su momento realizó su padre (Aunque viendo el panorama actual, Keiko no sería capaz ni de realizar una chocolatada)
+
+
+# Matriz de correlaciones
+
+Una matriz de correlación entre las variables numéricas nos puede ayudar a descubrir las relaciones en el dataset.  
+
+Antes de ello, crearemos una función que nos permita seleccionar del dataset solo a las variables numéricas o bien solo a las que no son numéricas, según sea el caso de nuestra necesidad.  
+
+```{r}
+CutDF <- function(df, b="num"){
+  lista <- data.frame(sapply(df, is.numeric))
+  lista$var <- row.names(lista)
+  colnames(lista) <- c("vf","var")
+  
+  if(b=="num"){
+    lista <- filter(lista, vf==TRUE)
+  }else if (b=="cat"){
+    lista <- filter(lista, vf!=TRUE)
+  }
+  
+  lista <- c(lista[,2])
+  df <- df[,lista]
+  return(df)
+}
+```
+
+```{r}
+dfNUM <- CutDF(df, "num")
+
+glimpse(dfNUM)
+```
+
+```{r, out.width = "3000px", fig.height=15, fig.width=15}
+library(psych)
+corPlot(dfNUM, scale = F, cex = 1, stars = T) 
+```
+
+La interpretación de cada valor de la matriz de correlación debe ir acompañada siempre de la significancia correspondiente. Es así que, a mayor número de asteriscos, se debe interpretar como un mayor nivel de significancia.  En ese sentido, podemos apreciar que la mayoría de variables seleccionadas, para realizar el presente trabajo, comparten una relación casi en su mayoría sumamente fuerte. Asimismo, cabe señalar que en la mayoría de casos  todas las variables, con excepción de Edad y PBI per capita, mantienen una relación entre 0.3 a 0.8. Ello siginifica que en sí el modelo que podría aplicarse en un futuro debería de ser validado. 
+
+# Boxplot
+
+Otros aspecto a evaluar antes de elaborar un modelo estadístico es inspeccionar si existen outliers. Para ello, es útil realizar diagramas de caja (boxplots) para las variables numéricas.  
+
+```{r}
+for (i in colnames(dfNUM)) {
+  boxplot(dfNUM[colnames(dfNUM)==i], main=i)
+}
+```
+
+Como se observa, si bien es cierto que existen algunos valores outliers, estos no son demasiados como pensar que afectarían las estimaciones estadísticas.En ese sentido, podemos ver que todas las variables analizadas a través de la funció boxplot o caja de bigotes de gato tienen un peso aceptable por lo que se sobre entiende que las variables aquí presentadas son válidadas para proseguir con el análisis.  
+
+
+# Regresión logística
+
+```{r}
+modelo_glm1 <- glm(Voto ~ . -Region -RegionNatural, data = df, family = "binomial")
+summary(modelo_glm1)
+```
+
+```{r}
+table(df$NSE, useNA = "alw")
+```
+
+Como se observa, respecto al Nivel Socio Económico (NSE), es conveniente agrupar algunas categorías, a fin de obtener una estimación correcta en el modelo.  
+
+```{r}
+df$NSE <- ifelse(df$NSE=="E" | df$NSE=="R", "E | R", df$NSE)
+```
+
+```{r}
+modelo_glm2 <- glm(Voto ~ . -Region -RegionNatural, data = df, family = "binomial")
+summary(modelo_glm2)
+```
+
+A fin de mejorar el modelo, retiraremos las variables cuyos coeficientes son no significativos.  
+
+```{r}
+modelo_glm3 <- glm(Voto ~ . -Region -RegionNatural -Edad -AreaGeografica -PPTO_PublicoPerCapita -BrechaGeneroIngresos -DisponibilidadServiciosFinancieros -CoberturaElectricidad -CoberturaAgua -HogaresCelular -EmpleoAdecuado -ResolucionExpedientesJudiciales, data = df, family = "binomial")
+summary(modelo_glm3)
+```
+
+Evaluar la validez y calidad de un modelo de regresión logística implica analizar tanto el modelo en su conjunto como los predictores que lo conforman. Se considera que el modelo es útil si es capaz de mostrar una mejora explicando las observaciones respecto al modelo nulo (sin predictores). El test Likelihood ratio calcula la significancia de la diferencia de residuos entre el modelo de interés y el modelo nulo. El estadístico sigue una distribución chi-cuadrado con grados de libertad equivalentes a la diferencia de grados de libertad de los dos modelos.  
+
+```{r}
+dif_residuos <- modelo_glm3$null.deviance - modelo_glm3$deviance
+gl <- modelo_glm3$df.null - modelo_glm3$df.residual
+p_value <- pchisq(q = dif_residuos, df = gl, lower.tail = FALSE)
+```
+
+`r paste0("p-value:", round(p_value, 4))`.
+Podemos afirmar entonces que el modelo, en su conjunto, es estadísticamente significativo.  
+
+Una mejor forma de medir que tan eficiente es el modelo, es elaborar una matriz de confusión, en la cual los resultados posibles son:  
++ Verdadero positivo: El valor real es positivo y  la prueba predijo tambien que era positivo. En nuestro caso, es valor real "Pedro Castillo" y predicción "Pedro Castillo".  
++ Verdadero negativo: El valor real  es negativo y la prueba predijo tambien que el resultado era negativo. En nuestro caso, es valor real "Keiko Fujimori" y predicción "Keiko Fujimori".     
++ Falso negativo: El valor real es positivo, y la prueba predijo  que el resultado es negativo. Esto es lo que en estadística se conoce como error tipo II. En nuestro caso, es valor real "Pedro Castillo" y predicción "Keiko Fujimori".    
++ Falso positivo: El valor real es negativo, y la prueba predijo  que el resultado es positivo. Esto es lo que en estadística se conoce como error tipo I. En nuestro caso, es valor real "Keiko Fujimori" y predicción "Pedro Castillo".    
+
+```{r}
+predicciones <- ifelse(test = modelo_glm3$fitted.values < 0.5, yes = "Pedro Castillo", no = "Keiko Fujimori")
+matriz_confusion <- table(modelo_glm3$model$Voto, predicciones,
+                          dnn = c("observaciones", "predicciones"))
+matriz_confusion
+```
+
+La exactitud (Acurracy) se mide como el porcentaje de la data clasificada correctamente. Es decir, (148+295)/(76+295+148+94) =
+`r round((148+295)/(76+295+148+94)*100,1)`%.  
+
+En contraste, la tasa de error es el porcentaje de la data clasificada incorrectamente. Es decir, (76+94)/(76+295+148+94) =
+`r round((76+94)/(76+295+148+94)*100,1)`%.  
+
+```{r, out.width = "500px", fig.height=7, fig.width=7}
+library(grid)
+library(vcd)
+vcd::mosaic(matriz_confusion, shade = T, colorize = T,
+       gp = gpar(fill = matrix(c("#ff0000","#ed6e00","#ff0000","#ed6e00"), 2, 2)))
+```
+
+
+# Reducción de dimensiones
+
+Las razones por las que nos interesaría reducir la dimensionalidad son varias:
++ Porque interesa identificar y eliminar las variables irrelevantes.   
++ Porque no siempre el mejor modelo es el que más variables tiene en cuenta. 
++ Porque se mejora el rendimiento computacional, lo que se traduce en un ahorro en coste y tiempo.
++ Porque se reduce la complejidad, lo que lleva a facilitar la comprensión del modelo y sus resultados.
+
+## Análisis de Componentes Principales (PCA)
+
+El Análisis de Componentes Principales (PCA) tiene como objetivo transformar un conjunto de variables, a las que se denominan variables originales, en un nuevo conjunto de variables denominadas componentes principales. Estas ultimas se caracterizan por estar no correlacionadas entre sí.  
+
+Siendo el objetivo del PCA reducir la dimensionalidad, suelen ser de interés utilizar el número mínimo de componentes que resultan suficientes para explicar los datos. No existe una respuesta o método único que permita identificar cual es el número óptimo de componentes principales a utilizar. Una forma de proceder muy extendida consiste en evaluar la proporción de varianza explicada acumulada y seleccionar el número de componentes mínimo a partir del cual el incremento deja de ser sustancial.   
+
+El cálculo de los componentes principales depende de las unidades de medida empleadas en las variables. Es por tanto importante, antes de aplicar el PCA, estandarizar las variables para que tengan media 0 y desviación estándar 1, ya que, de lo contrario, las variables con mayor varianza dominarían al resto.  
+
+```{r}
+pca <- prcomp(dfNUM, scale=T) # scale=T para estandarizar las variables
+print(pca)
+summary(pca)
+```
+
+```{r}
+prop_varianza_acum <- cumsum(pca$sdev^2/sum(pca$sdev^2))
+
+library(ggplot2)
+ggplot(data = data.frame(prop_varianza_acum, pc = factor(1:16)),
+       aes(x = pc, y = prop_varianza_acum, group = 1)) +
+  geom_point() +
+  geom_line() +
+  geom_label(aes(label = round(prop_varianza_acum,2))) +
+  labs(x = "Componentes principales", 
+       y = "Proporción de varianza explicada acumulada")
+```
+
+En este caso, como puede observarse en el gráfico, habría que tomar un número arbitario de dimensiones, pues no es muy claro qué número de dimensiones es suficiente para asegurar que el incremento en la proporción de varianza explicada acumulada deja de ser sustancial.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
